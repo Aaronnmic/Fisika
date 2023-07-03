@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gerak Parabola - Halaman Utama</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #4e73df;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        h1 {
+            font-size: 54px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 24px;
+            margin-bottom: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            overflow-wrap: break-word;
+        }
+
+        .button {
+            padding: 8px 30px;
+            background-color: #4e73df;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: #3758b7;
+        }
+
+        .example-image {
+            margin-top: 20px;
+            max-width: 100%;
+            width: 40%;
+            height: auto;
+        }
+        
+        .formula-list {
+            list-style-type: none;
+            padding: 0;
+            margin-bottom: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            overflow-wrap: break-word;
+        }
+        
+        .formula-list li {
+            margin-bottom: 10px;
+            font-size: 24px;
+            text-align: center;
+        }
+        
+        .formula-list li:before {
+            content: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Gerak Parabola</h1>
+        <p>Gerak parabola adalah gerakan benda yang dilempar ke udara dengan lintasan berbentuk parabola. Gerakan ini terjadi ketika suatu benda diberikan kecepatan awal dan ditarik oleh gaya gravitasi.</p>
+        <p>Gerak parabola memiliki karakteristik tertentu, seperti tinggi maksimum, jarak terjauh, waktu terbang, dan waktu yang dibutuhkan untuk mencapai ketinggian maksimum. </p>
+        <p>Berikut adalah rumus-rumus gerak parabola:</p>
+        <img class="example-image" src="gerak_parabola.jpg" alt="Contoh Gerak Parabola">
+        <ul class="formula-list">
+            <li>Tinggi Maksimum (H) = (v<sup>2</sup> * sin<sup>2</sup>(θ)) / (2 * g)</li>
+            <li>Jarak Terjauh (D) = (v<sup>2</sup> * sin(2θ)) / g</li>
+            <li>Waktu Terbang (T) = (2 * v * sin(θ)) / g</li>
+            <li>Waktu Mencapai Ketinggian Maksimum (T<sub>max</sub>) = v * sin(θ) / g</li>
+        </ul>
+        <button class="button" onclick="window.location.href='parabola.html'">Lanjut</button>
+    </div>
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gerak Parabola</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .container {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            animation: fade-in 0.5s ease-in-out;
+        }
+
+        @keyframes fade-in {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 54px;
+        }
+
+        h2 {
+            font-size: 34px;
+        }
+
+        p {
+            font-size: 24px;
+        }
+
+        body {
+            background-color: #4e73df;
+        }
+        
+        .chart-container {
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f8f9fc;
+            border-radius: 10px;
+        }
+        
+        .chart-container.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .result-container {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f8f9fc;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        .result-container.show {
+            display: block;
+        }
+
+        label {
+            font-size: 24px;
+        }
+
+        input[type="number"] {
+            font-size: 24px;
+        }
+
+        button {
+            font-size: 24px;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Gerak Parabola</h1>
+
+        <label for="angle">Sudut Lemparan:</label>
+        <input type="number" id="angle" min="0" max="90" value="">
+
+        <label for="speed">Kecepatan Awal:</label>
+        <input type="number" id="speed" min="0" value="">
+
+        <label for="gravity">Percepatan Gravitasi:</label>
+        <input type="number" id="gravity" min="0" value="">
+
+        <button onclick="updateChart()">Tampilkan Gerak Parabola</button>
+
+        <div id="chartContainer" class="chart-container">
+            <canvas id="parabolaChart"></canvas>
+        </div>
+        
+        <div id="resultContainer" class="result-container">
+            <h2>Hasil:</h2>
+            <p>A. Ketinggian maksimum: <span id="heightMax"></span></p>
+            <p>B. Waktu yang dibutuhkan untuk mencapai ketinggian maksimum: <span id="timeMax"></span></p>
+            <p>C. Jarak terjauh yang dicapai: <span id="distanceMax"></span></p>
+            <p>D. Lama peluru di udara: <span id="timeAirborne"></span></p>
+        </div>
+    </div>
+
+    <script>
+        var parabolaChart;
+
+        function calculatePosition(angle, speed, t, gravity) {
+            var radian = angle * (Math.PI / 180);
+            var x = speed * Math.cos(radian) * t;
+            var y = (speed * Math.sin(radian) * t) - (0.5 * gravity * t * t);
+            return { x: x, y: y };
+        }
+
+        function generateParabolaData(angle, speed, gravity) {
+            var data = [];
+            var t = 0;
+            var interval = 0.1;
+
+            while (true) {
+                var position = calculatePosition(angle, speed, t, gravity);
+                if (position.y < 0) break;
+                data.push({ x: position.x, y: position.y });
+                t += interval;
+            }
+
+            return data;
+        }
+
+        function updateChart() {
+            var angleInput = document.getElementById("angle");
+            var speedInput = document.getElementById("speed");
+            var gravityInput = document.getElementById("gravity");
+
+            var angle = parseFloat(angleInput.value);
+            var speed = parseFloat(speedInput.value);
+            var gravity = parseFloat(gravityInput.value);
+
+            var parabolaData = generateParabolaData(angle, speed, gravity);
+
+            if (parabolaChart) {
+                parabolaChart.destroy();
+            }
+
+            var ctx = document.getElementById("parabolaChart").getContext("2d");
+            parabolaChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    datasets: [{
+                        label: 'Gerak Parabola',
+                        data: parabolaData,
+                        borderColor: 'red',
+                        fill: false
+                    }]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            type: 'linear',
+                            position: 'bottom'
+                        },
+                        y: {
+                            type: 'linear',
+                            position: 'left'
+                        }
+                    }
+                }
+            });
+
+            // Animasi fade-in untuk chart
+            var chartContainer = document.getElementById("chartContainer");
+            chartContainer.classList.add("show");
+            
+            // Menghapus hasil sebelumnya
+            var resultContainer = document.getElementById("resultContainer");
+            resultContainer.classList.remove("show");
+            
+            // Mengosongkan hasil sebelumnya
+            var timeMax = document.getElementById("timeMax");
+            var heightMax = document.getElementById("heightMax");
+            var timeAirborne = document.getElementById("timeAirborne");
+            var distanceMax = document.getElementById("distanceMax");
+            
+            timeMax.textContent = "";
+            heightMax.textContent = "";
+            timeAirborne.textContent = "";
+            distanceMax.textContent = "";          
+            
+            // Menghitung dan menampilkan hasil
+            var timeMaxValue = (speed * Math.sin(angle * (Math.PI / 180))) / gravity;
+            var heightMaxValue = (speed * speed * Math.sin(angle * (Math.PI / 180)) * Math.sin(angle * (Math.PI / 180))) / (2 * gravity);
+            var timeAirborneValue = (2 * speed * Math.sin(angle * (Math.PI / 180))) / gravity;
+            var distanceMaxValue = (speed * speed * Math.sin(2 * angle * (Math.PI / 180))) / gravity;
+            
+            timeMax.textContent = timeMaxValue.toFixed(2) + " detik";
+            heightMax.textContent = heightMaxValue.toFixed(2) + " meter";
+            timeAirborne.textContent = timeAirborneValue.toFixed(2) + " detik";
+            distanceMax.textContent = distanceMaxValue.toFixed(2) + " meter";
+            
+            // Animasi fade-in untuk hasil
+            resultContainer.classList.add("show");
+        }
+    </script>
+</body>
+</html>

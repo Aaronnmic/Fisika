@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Gerak Parabola</title>
+    <meta charset="UTF-8">
     <style>
         body {
             display: flex;
@@ -109,6 +110,7 @@
         <div id="resultContainer" class="result-container">
             <h2>Hasil:</h2>
             <p>A. Ketinggian maksimum: <span id="heightMax"></span></p>
+            <p id="heightMaxExplanation">Cara Pengerjaan:</p>
             <p>B. Waktu yang dibutuhkan untuk mencapai ketinggian maksimum: <span id="timeMax"></span></p>
             <p>C. Jarak terjauh yang dicapai: <span id="distanceMax"></span></p>
             <p>D. Lama peluru di udara: <span id="timeAirborne"></span></p>
@@ -206,12 +208,26 @@
             var distanceMaxValue = (speed * speed * Math.sin(2 * angle * (Math.PI / 180))) / gravity;
             
             timeMax.textContent = timeMaxValue.toFixed(2) + " detik";
-            heightMax.textContent = heightMaxValue.toFixed(2) + " meter";
+            heightMax.textContent = heightMaxValue.toFixed(3) + " meter";
             timeAirborne.textContent = timeAirborneValue.toFixed(2) + " detik";
             distanceMax.textContent = distanceMaxValue.toFixed(2) + " meter";
             
             // Animasi fade-in untuk hasil
             resultContainer.classList.add("show");
+            
+            // Menambahkan cara pengerjaan untuk hasil A
+            var heightMaxExplanation = document.getElementById("heightMaxExplanation");
+            heightMaxExplanation.innerHTML = "Cara Pengerjaan:<br>"
+                + " 1. Gunakan rumus H = (v^2 * sin^2 θ) / (2g), di mana:<br>"
+                + "- H adalah ketinggian maksimum,<br>"
+                + "- v adalah kecepatan awal (" + speed + " m/s),<br>"
+                + "- θ adalah sudut lemparan (" + angle + " derajat),<br>"
+                + "- g adalah percepatan gravitasi (" + gravity + " m/s²).<br>"
+                + "2. Substitusikan nilai v, θ, dan g ke dalam rumus:<br>"
+                + "   H = (" + speed + "^2 * sin^2(" + angle + "°)) / (2 * " + gravity + ").<br>"
+                + "3. Hitung hasilnya:<br>"
+                + "   H = (" + speed * speed + " * " + Math.sin(angle * (Math.PI / 180)).toFixed(3) + "^2) / (2 * " + gravity + ").<br>"
+                + "   H = " + heightMaxValue.toFixed(3) + " meter.<br>";
         }
     </script>
 </body>
